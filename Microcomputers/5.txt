@@ -1,0 +1,460 @@
+                      org 100h
+.data
+istek   DB  "Please guess a number between 0 and 9: $"
+siyahcizgi DB  13, 10, "$" 
+asciimesaj1  DB 'YOU WIN:'
+asciimesaj2  DB 'TOTAL GUESSES:'
+sayilar DW '1','2','3','4','5','6','7','8','9','10','11','12','13','14','15','16','17','18','19','20'  
+userandcomputer DB 00111110b, 01000000b,  00000000b, 00000000b, 00000000b, 00111001b, 01000000b, 00000000b   
+num0	DB 00111111b 
+num1    DB 00000110b
+num2    DB 01011011b 
+num3    DB 01001111b 
+num4    DB 01100110b 
+num5    DB 01101101b
+num6    DB 01111101b 
+num7    DB 00000111b 
+num8    DB 01111111b
+num9    DB 01101111b
+
+.code
+
+mov ax, @data
+mov ds, ax
+mov es, ax 
+
+
+defaultSevenSegmentPrint: 
+mov dx, 2030h
+MOV SI, 0
+MOV CX, 8
+
+   
+
+printsevenSegment:
+MOV AL,userandcomputer[SI]
+out dx,al
+INC SI
+INC DX
+LOOP printsevenSegment 
+	
+	
+
+
+defaultASCIIPrint:
+mov dx, 2040h
+MOV SI, 0
+MOV CX, 8 
+
+printASCII:
+MOV AL, asciimesaj1[SI]
+out dx, AL
+INC SI
+INC DX
+LOOP printASCII 
+
+mov dx, 2050h
+mov si, 0 
+mov cx, 14
+
+printASCII2:
+mov al, asciimesaj2[SI]
+out dx, al
+inc si
+inc dx
+LOOP printASCII2
+
+
+jmp START
+
+
+START:
+JMP RANDNUM
+
+
+RANDNUM:
+mov ah, 0
+int 1ah
+
+mov ax, dx
+mov dx, 0
+mov bx, 10
+div bx
+
+mov bl, dl
+
+
+COMPAREBL:
+CMP BL, 0
+JE cmp0yazdir
+CMP BL, 1
+JE cmp1yazdir
+CMP BL, 2
+JE cmp2yazdir
+CMP BL, 3
+JE cmp3yazdir
+CMP BL, 4
+JE cmp4yazdir
+CMP BL, 5
+JE cmp5yazdir
+CMP BL, 6
+JE cmp6yazdir
+CMP BL, 7
+JE cmp7yazdir
+CMP BL, 8
+JE cmp8yazdir
+CMP BL, 9
+JE cmp9yazdir
+JMP RANDNUM 
+
+set:
+mov bp, 0 
+mov di, 0 
+
+
+INPUT:
+
+LEA DX, istek
+MOV AH, 9
+INT 21H
+MOV AH, 1
+INT 21H 
+MOV DX, 0
+SUB AL, 30H 
+inc bh
+JMP COMP
+
+
+
+
+
+
+
+
+
+
+COMP: 
+CMP AL, 0
+JE kullanici0yazdir
+CMP AL, 1
+JE kullanici1yazdir  
+CMP AL, 2
+JE kullanici2yazdir   
+CMP AL, 3
+JE kullanici3yazdir
+CMP AL, 4
+JE kullanici4yazdir
+CMP AL, 5
+JE kullanici5yazdir
+CMP AL, 6
+JE kullanici6yazdir
+CMP AL, 7
+JE kullanici7yazdir
+CMP AL, 8
+JE kullanici8yazdir 
+CMP AL, 9
+JE kullanici9yazdir
+
+JMP RETRY
+
+TotalWinGuncelle:
+
+mov dx, 2049h
+mov ax, sayilar[bp] 
+out dx, ax 
+add bp, 2
+
+jmp TotalGuessesGuncelle
+
+
+TotalGuessesGuncelle:
+
+mov dx, 205Eh
+mov ax, sayilar[di]
+out dx, ax         
+add di, 2
+jmp RETRY  
+
+
+
+
+kullanici0yazdir:
+push ax
+mov dx, 2032h
+MOV SI, 0
+MOV AL,num0[SI]
+out dx,al
+INC SI
+INC DX 
+
+pop ax
+cmp al, bl
+  
+je TotalWinGuncelle
+jmp TotalGuessesGuncelle 
+
+
+
+
+
+
+
+kullanici1yazdir:
+push ax
+mov dx, 2032h
+MOV SI, 0
+MOV AL,num1[SI]
+out dx,al
+INC SI
+INC DX 
+
+pop ax
+cmp al, bl
+  
+je TotalWinGuncelle
+jmp TotalGuessesGuncelle  
+            
+            
+kullanici2yazdir:
+push ax
+mov dx, 2032h
+MOV SI, 0
+MOV AL,num2[SI]
+out dx,al
+INC SI
+INC DX 
+
+pop ax
+cmp al, bl
+  
+je TotalWinGuncelle
+jmp TotalGuessesGuncelle  
+
+kullanici3yazdir:
+push ax
+mov dx, 2032h
+MOV SI, 0
+MOV AL,num3[SI]
+out dx,al
+
+
+pop ax
+cmp al, bl
+  
+je TotalWinGuncelle
+jmp TotalGuessesGuncelle 
+
+kullanici4yazdir:
+push ax
+mov dx, 2032h
+MOV SI, 0
+MOV AL,num4[SI]
+out dx,al
+ 
+
+pop ax
+cmp al, bl
+  
+je TotalWinGuncelle
+jmp TotalGuessesGuncelle 
+
+
+kullanici5yazdir:
+push ax
+mov dx, 2032h
+MOV SI, 0
+MOV AL,num5[SI]
+out dx,al
+INC SI
+INC DX 
+
+pop ax
+cmp al, bl
+  
+je TotalWinGuncelle
+jmp TotalGuessesGuncelle 
+
+
+
+kullanici6yazdir:
+push ax
+mov dx, 2032h
+MOV SI, 0
+MOV AL,num6[SI]
+out dx,al
+ 
+
+pop ax
+cmp al, bl
+  
+je TotalWinGuncelle
+jmp TotalGuessesGuncelle  
+
+
+
+kullanici7yazdir:
+push ax
+mov dx, 2032h
+MOV SI, 0
+MOV AL,num7[SI]
+out dx,al
+INC SI
+INC DX 
+
+pop ax
+cmp al, bl
+  
+je TotalWinGuncelle
+jmp TotalGuessesGuncelle   
+
+
+
+kullanici8yazdir:
+push ax
+mov dx, 2032h
+MOV SI, 0
+MOV AL,num8[SI]
+out dx,al
+ 
+
+pop ax
+cmp al, bl
+  
+je TotalWinGuncelle
+jmp TotalGuessesGuncelle 
+
+
+kullanici9yazdir:
+push ax
+mov dx, 2032h
+MOV SI, 0
+MOV AL,num9[SI]
+out dx,al
+
+pop ax
+cmp al, bl
+  
+je TotalWinGuncelle
+jmp TotalGuessesGuncelle 
+
+
+cmp0yazdir: 
+mov dx, 2037h
+MOV SI, 0
+MOV AL,num0[SI]
+out dx,al
+
+
+cmp1yazdir: 
+mov dx, 2037h
+MOV SI, 0
+MOV AL,num1[SI]
+out dx,al
+
+
+
+jmp set
+
+cmp2yazdir: 
+mov dx, 2037h
+MOV SI, 0
+MOV AL,num2[SI]
+out dx,al
+
+
+
+jmp set
+
+
+cmp3yazdir: 
+mov dx, 2037h
+MOV SI, 0
+MOV AL,num3[SI]
+out dx,al
+
+
+
+jmp set
+
+
+cmp4yazdir: 
+mov dx, 2037h
+MOV SI, 0
+MOV AL,num4[SI]
+out dx,al
+
+
+
+jmp set
+
+
+cmp5yazdir: 
+mov dx, 2037h
+MOV SI, 0
+MOV AL,num5[SI]
+out dx,al
+
+
+
+jmp set 
+
+
+cmp6yazdir: 
+mov dx, 2037h
+MOV SI, 0
+MOV AL,num6[SI]
+out dx,al
+
+
+
+jmp set 
+
+
+
+cmp7yazdir: 
+mov dx, 2037h
+MOV SI, 0
+MOV AL,num7[SI]
+out dx,al
+
+
+
+jmp set  
+
+
+cmp8yazdir: 
+mov dx, 2037h
+MOV SI, 0
+MOV AL,num8[SI]
+out dx,al
+
+
+
+jmp set 
+
+cmp9yazdir: 
+mov dx, 2037h
+MOV SI, 0
+MOV AL,num9[SI]
+out dx,al
+
+
+
+jmp set
+ 
+
+ 
+
+
+
+
+
+RETRY:
+LEA DX, siyahcizgi
+MOV AH, 9
+INT 21H
+JMP INPUT
+          
+          
+          
+ret

@@ -1,0 +1,29 @@
+name "Lab1"
+org 100h
+
+    .data 
+    
+        arr db 1,2,3,4,5
+        
+    .code       
+    
+        lea bx, arr
+        mov di, 2000h      
+        mov cx, 5 
+        
+sum:
+    
+    mov dl, es:[bx]
+    
+    inc bx      
+    
+    mov [di], dl 
+    
+    inc di       
+         
+    
+ loop sum 
+    
+     
+    
+ ret

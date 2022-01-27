@@ -1,0 +1,101 @@
+     org 100h
+
+.data
+
+    message2  db 'The number can be divided by 2',13,10
+    message3  db 'The number can be divided by 3',13,10
+    message5  db 'The number can be divided by 5',13,10
+    message10 db 'The number can be divided by 10',13,10
+    num db 15
+
+.code
+
+First:
+
+    mov al,num
+    mov ah,0
+    mov bl,2
+    div bl
+    cmp ah,0
+    je Print2
+
+Second:
+
+    mov al,num
+    mov ah,0
+    mov bl,3
+    div bl
+    cmp ah,0
+    je Print3
+
+Third:
+
+    mov al,num
+    mov ah,0
+    mov bl,5
+    div bl
+    cmp ah,0
+    je Print5
+
+Fourth:
+
+    mov al,num
+    mov ah,0
+    mov bl,10
+    div bl
+    cmp ah,0
+    je Print10
+
+Exit:
+
+    mov ah,4Ch
+    int 21h
+
+Print2 proc
+
+    lea si,message2
+    mov cx,32
+    mov ah,0eh
+GO:LODSB
+    int 10h
+    loop GO
+jmp Second
+ret
+Print2 ENDP
+
+Print3 proc
+
+    lea si,message3
+    mov cx,32
+    mov ah,0eh
+GO3: LODSB
+    int 10h
+    loop GO3
+jmp Third
+ret
+Print3 ENDP
+
+Print5 proc
+
+    lea si,message5
+    mov cx,32
+    mov ah,0eh
+GO5: LODSB
+    int 10h
+    loop GO5
+jmp Fourth
+ret
+Print5 ENDP
+
+Print10 proc
+
+    lea si,message10
+    mov cx,32
+    mov ah,0eh
+GO10: LODSB
+    int 10h
+    loop GO10
+jmp Exit
+ret
+Print10 ENDP
+ret

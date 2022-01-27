@@ -1,0 +1,34 @@
+org 100h
+
+.data
+
+arr db 'c','e','n','g' 
+arr2 db 'z','x','c','v'
+
+.code                 
+
+lea  si , arr
+lea  di , arr2  
+mov  cx , 4 
+
+
+loop1:  
+
+
+LODSB
+ 
+
+PUSH ax  
+
+
+loop loop1  
+
+loop2:
+
+POP ax  
+
+STOSB 
+
+loop loop2     
+
+ret

@@ -1,0 +1,126 @@
+                               
+
+
+org 100h
+
+.data
+labirent DB 0001000B, 0000000B, 0000000B, 0000000B, 0000000B, 1110111B, 1000001B, 1111001B, 1111011B, 1000001B, 1011111B, 1011111B, 1010001B, 1010101B, 1000101B, 1111101B, 1000101B, 1010001B, 1010101B, 1010101B, 1100011B, 1000001B, 1011101B, 1011101B, 1011101B, 1001001B, 1000101B, 1011101B, 1100001B, 1101111B, 1000001B, 1010101B, 1010101B, 1010101B, 1111101b, 0000000B, 0000000B, 0000000B, 0000000B, 0000000B
+guncel_konum DB 0001000B
+               
+
+
+
+.code
+
+mov di, 0
+
+
+mov dx, 2000h 
+labirentPrint:
+mov si, 0
+mov cx, 42  
+
+print:
+
+mov al, labirent[si]
+out dx, al         
+inc si
+inc dx
+loop print
+    
+ 
+
+
+
+
+input:
+mov ah, 00h
+int 16h
+
+jmp COMPARE
+
+
+COMPARE:
+cmp ah, 48h
+je Ugit 
+cmp ah, 50h
+je Dgit
+cmp ah, 4Dh
+je Rgit
+cmp ah, 4Bh
+je Lgit
+
+ 
+
+
+
+
+
+
+
+Rgit:
+mov al, guncel_konum[0]
+test labirent[di+1], al
+jnz input    
+add labirent[di+1], al
+sub labirent[di], al
+inc di    
+mov dx, 2000h
+jmp labirentPrint 
+
+
+Ugit:  
+mov al, guncel_konum[0]
+mov bl,al 
+shr al, 1 
+
+test labirent[di], al
+
+jnz input   
+add labirent[di], al 
+sub labirent[di], bl
+mov guncel_konum[0], al   
+mov dx, 2000h     
+jmp labirentPrint   
+
+
+Dgit:
+mov al, guncel_konum[0]
+mov bl,al
+shl al, 1
+test labirent[di], al
+
+jnz input
+add labirent[di], al
+sub labirent[di], bl
+mov guncel_konum[0], al
+mov dx, 2000h 
+jmp labirentPrint
+
+Lgit:
+mov al, guncel_konum[0]   
+test labirent[di-1], al
+jnz input
+add labirent[di-1], al
+sub labirent[di], al
+dec di
+mov dx, 2000h
+jmp labirentPrint
+
+
+
+
+
+
+
+
+
+
+
+
+
+ret
+
+
+
+

@@ -1,0 +1,82 @@
+org 100h
+
+
+.data
+STR1 DB 'MICROCOMPUTERS'
+LEN1 DW ($-STR1) 
+STR2 DB 'CENG'
+LEN2 DW ($-STR2)       
+MESSAGE1 DB 'MICROCOMPUTERS CONTAINS COMPUTER'
+MESSAGE2 DB 'MICROCOMPUTERS DOES NOT CONTAIN CENG'
+
+
+
+.code
+
+LEA SI, STR1
+LEA DI, STR2
+MOV DX, LEN1
+MOV CX, LEN2
+
+               
+
+
+FIND:        
+        MOV AL, [SI];    
+        MOV AH, [DI];   
+        CMP AL,AH;      
+        JE CHECK;       
+        JNE NOTEQL
+
+NOTEQL:
+        INC SI;         
+        DEC DX;         
+        CMP DX, 0000H;  
+        JE RED;         
+        JMP FIND
+
+CHECK:
+        MOV CX, LEN2;   
+        ;               
+        MOV SP, SI;     
+        ADD SP, 0001H
+        CLD
+        REPE CMPSB
+        JNE TEMPRED
+        JMP GREEN
+
+TEMPRED:;               
+        MOV SI,SP;      
+        DEC DX
+        LEA DI, STR2;   
+        JMP FIND;                
+
+GREEN:  
+        LEA SI, MESSAGE1
+        MOV CX, 32
+        MOV AH, 0Eh
+        GO:
+          LODSB
+          int 10h
+          LOOP GO
+          
+        JMP EXIT
+
+
+RED:    
+        
+        LEA SI, MESSAGE2
+        MOV CX, 36
+        MOV AH, 0Eh
+        GO2:
+        LODSB
+        int 10h
+        LOOP GO2
+        
+        JMP EXIT
+
+EXIT:
+             
+
+    END
+    RET
